@@ -1,0 +1,17 @@
+#This below command is to set up express in javaScript
+    #npm init
+    #npm install express
+
+    #nodemon index.js (To run your server)
+
+
+#If you want to use typeScript in backend then use this 
+    #npm init -y
+    #npm install express typescript
+    #npm install -D ts-node nodemon @types/express
+    #npx tsc --init
+    #After these command make a index.ts file inside a folder named src which is created by you and all the files which you will create will go inside this
+    #"scripts": {
+      "dev": "nodemon --exec ts-node src/index.ts"
+    }
+    #npm run dev (To run your server)

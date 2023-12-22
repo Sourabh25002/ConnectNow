@@ -1,0 +1,7 @@
+npm create vite@latest
+
+cd ConnectNow
+npm install
+npm run dev
+
+These above command is used via vite to install react and all the file folder which we needed to build our project
