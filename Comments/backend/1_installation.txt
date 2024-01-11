@@ -15,3 +15,8 @@
       "dev": "nodemon --exec ts-node src/index.ts"
     }
     #npm run dev (To run your server)
+
+#Install env by using "npm i dotenv"
+
+#npm i cookie-parser
+#npm i cors
