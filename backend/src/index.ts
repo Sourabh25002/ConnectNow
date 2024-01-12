@@ -1,9 +1,9 @@
-import express, { Request, Response, NextFunction } from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import * as dotenv from 'dotenv';
-import authRoutes from './routes/auth';
-import userDetailsRoutes from './routes/userDetails';
+import express, { Request, Response, NextFunction } from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import * as dotenv from "dotenv";
+import authRoutes from "./routes/auth";
+import userDetailsRoutes from "./routes/userDetails";
 
 const app = express();
 const port = process.env.PORT;
@@ -12,10 +12,12 @@ const port = process.env.PORT;
 dotenv.config();
 
 // Enable CORS middleware with credentials support
-app.use(cors({
-  origin: process.env.CORS_ORIGIN,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  })
+);
 
 // Parse incoming JSON requests with a size limit of 16kb
 app.use(express.json({ limit: "16kb" }));
@@ -30,8 +32,8 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // Root route
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello world!');
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello world!");
 });
 
 // Use authentication routes defined in the "authRoutes" module

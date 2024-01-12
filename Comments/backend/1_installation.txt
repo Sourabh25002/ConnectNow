@@ -20,3 +20,7 @@
 
 #npm i cookie-parser
 #npm i cors
+#npm i bcrypt
+#npm i jsonwebtoken
+#npm i cloudinary
+#npm i multer
