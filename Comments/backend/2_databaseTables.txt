@@ -1,0 +1,109 @@
+CREATE TABLE users_account (
+    user_id SERIAL PRIMARY KEY,
+    email_address VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    account_created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Kolkata') NOT NULL
+);
+
+CREATE TABLE users_profile (
+    user_profile_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users_account(user_id) NOT NULL,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    headline VARCHAR(255),
+    current_company VARCHAR(255),
+    highest_education VARCHAR(255),
+    country_of_residence VARCHAR(255),
+    residence VARCHAR(255),
+    email_address VARCHAR(255),
+    phone_number VARCHAR(255),
+    connection_count INT,
+    date_of_birth DATE,
+    personal_website_link VARCHAR(255),
+    profile_picture_url VARCHAR(255),
+    cover_photo_url VARCHAR(255),
+    about_description VARCHAR(2600)
+);
+
+CREATE TABLE education (
+    education_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users_account(user_id) NOT NULL,
+    school_name VARCHAR(255),
+    degree_name VARCHAR(255),
+    field_of_study VARCHAR(255),
+    start_date DATE,
+    end_date DATE,
+    grade VARCHAR(50)
+);
+
+CREATE TABLE work_experience (
+    experience_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users_account(user_id) NOT NULL,
+    job_title VARCHAR(255),
+    company_name VARCHAR(255),
+    location VARCHAR(255),
+    work_location_type VARCHAR(255),
+    start_date DATE,
+    end_date DATE,
+    industry VARCHAR(255),
+    description VARCHAR(1000)
+);
+
+CREATE TABLE posts (
+    post_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users_account(user_id) NOT NULL,
+    media_link VARCHAR(255),
+    content TEXT,
+    likes_count INT,
+    comments_count INT,
+    created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') NOT NULL
+);
+
+CREATE TABLE post_likes (
+    post_like_id SERIAL PRIMARY KEY,
+    post_id INT REFERENCES posts(post_id) NOT NULL,
+    user_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') NOT NULL
+);
+
+CREATE TABLE post_comments (
+    post_comment_id SERIAL PRIMARY KEY,
+    post_id INT REFERENCES posts(post_id) NOT NULL,
+    user_id INT NOT NULL,
+    text_content TEXT,
+    created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') NOT NULL
+);
+
+CREATE TABLE user_skills (
+    user_skill_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users_account(user_id) NOT NULL,
+    skill_name VARCHAR(255)
+);
+
+CREATE TABLE project_details (
+    project_detail_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users_account(user_id) NOT NULL,
+    project_name VARCHAR(100),
+    project_description TEXT,
+    required_skills VARCHAR(255),
+    start_date DATE,
+    end_date DATE,
+    project_link VARCHAR(255)
+);
+
+
+
+
+
+
+
+
+
+//Not Implemented Ones
+Table connections {
+  connection_id INT [primary key]
+  requester_user_id INT //[foreign key referencing Users.UserID]
+  connected_user_id INT //[foreign key referencing Users.UserID for the connected user]
+  status VARCHAR(50) //-- e.g., Pending, Accepted, Declined
+  requested_at TIMESTAMP
+}

@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
 import authRoutes from "./routes/auth";
-import userDetailsRoutes from "./routes/userDetails";
+
 
 const app = express();
 const port = process.env.PORT;
@@ -39,8 +39,7 @@ app.get("/", (req: Request, res: Response) => {
 // Use authentication routes defined in the "authRoutes" module
 app.use("/auth", authRoutes);
 
-// Use user details routes defined in the "userDetailsRoutes" module
-app.use("/userDetails", userDetailsRoutes);
+
 
 // Start the server and listen on the specified port
 app.listen(port, () => {
