@@ -1,16 +1,19 @@
 import { Router, Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
 import bcrypt from 'bcrypt';
 import query from '../db/database';
 import { users_account } from '../models/users';  
+import { generateAccessToken, generateRefreshToken, verifyToken } from '../utils/jwt_Utils';
 
 const router = Router();
+router.use(cookieParser());
 
 // Signup Route
 router.post('/signUp', async (req: Request, res: Response) => {
   try {
     let { email_address, password }: users_account = req.body;
 
-    // Validate the input 
+    // Validate the input
     if (!email_address || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
@@ -34,13 +37,26 @@ router.post('/signUp', async (req: Request, res: Response) => {
     const result = await query<users_account>('INSERT INTO users_account(email_address, password) VALUES($1, $2) RETURNING user_id', [email_address, hashedPassword]);
 
     // Successful sign-up
-    res.status(201).json({ userId: result.rows[0].user_id, message: 'User successfully registered' });
+
+    // Generate tokens
+    const accessToken = generateAccessToken({ user_id: result.rows[0].user_id, email_address });
+    const refreshToken = generateRefreshToken({ user_id: result.rows[0].user_id, email_address });
+
+    // Store the refresh token in the database
+    await query<users_account>('UPDATE users_account SET refresh_token = $1 WHERE user_id = $2', [refreshToken, result.rows[0].user_id]);
+
+    // Send tokens as cookies
+    res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+
+    res.status(201).json({ userId: result.rows[0].user_id, accessToken, refreshToken, message: 'User successfully registered and logged in' });
   } catch (error: any) {
     // Handle errors during sign-up
     console.error('Error during sign-up:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 // Login Route
 router.post('/login', async (req: Request, res: Response) => {
@@ -71,12 +87,72 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // Successful login
-    res.status(200).json({ userId: user.user_id, message: 'Login successful' });
+    const userId = user.user_id;
+
+    // Generate tokens
+    const accessToken = generateAccessToken({ user_id: userId, email_address });
+    const refreshToken = generateRefreshToken({ user_id: userId, email_address });
+
+    // Store the refresh token in the database
+    await query<users_account>('UPDATE users_account SET refresh_token = $1 WHERE user_id = $2', [refreshToken, userId]);
+
+     // Send tokens as cookies
+     res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' }); 
+
+    res.status(200).json({ userId, accessToken, refreshToken: user.user_id, message: 'Login successful' });
   } catch (error: any) {
     // Handle errors during login
     console.error('Error during login:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+// Logout Route
+router.post('/logout', async (req: Request, res: Response) => {
+  try {
+    // Verify the access token from cookies
+    const accessToken = req.cookies.accessToken;
+    const accessSecret = process.env.ACCESS_TOKEN_SECRET as string; // Use your environment variable
+
+    // Log the access token
+    console.log('Access Token:', accessToken);
+
+    // Verify the access token
+    const decodedToken = verifyToken(accessToken, accessSecret);
+
+    // Log the decoded token
+    console.log('Decoded Token:', decodedToken);
+
+    // If the token is invalid or expired, return an unauthorized response
+    if (!decodedToken) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Extract the user ID from the decoded token
+    const userId = decodedToken.user_id;
+
+    // Log the user ID
+    console.log('User ID:', userId);
+
+    // Clear the refresh token in the database (assuming you have a users_account table)
+    await query<users_account>('UPDATE users_account SET refresh_token = NULL WHERE user_id = $1', [userId]);
+
+    // Clear the access and refresh tokens from cookies
+    res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'strict' });
+    res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'strict' });
+
+    // Respond with a successful logout message
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error: any) {
+    // Log and respond with an internal server error if an exception occurs
+    console.error('Error during logout:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
 
 export default router;
