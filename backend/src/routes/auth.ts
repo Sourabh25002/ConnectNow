@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import query from '../db/database';
 import { users_account } from '../models/users';  
 import { generateAccessToken, generateRefreshToken, verifyToken } from '../utils/jwt_Utils';
+import authenticateMiddleware from '../middlewares/auth_middleware';
 
 const router = Router();
 router.use(cookieParser());
@@ -58,6 +59,7 @@ router.post('/signUp', async (req: Request, res: Response) => {
 });
 
 
+
 // Login Route
 router.post('/login', async (req: Request, res: Response) => {
   try {
@@ -109,11 +111,14 @@ router.post('/login', async (req: Request, res: Response) => {
 });
 
 
+
 // Logout Route
-router.post('/logout', async (req: Request, res: Response) => {
+router.post('/logout', authenticateMiddleware, async (req: Request, res: Response) => {
   try {
+    // The authentication middleware will handle token refresh if needed
+
     // Verify the access token from cookies
-    const accessToken = req.cookies.accessToken;
+    const accessToken = req.newAccessToken || req.cookies.accessToken;
     const accessSecret = process.env.ACCESS_TOKEN_SECRET as string; // Use your environment variable
 
     // Log the access token
@@ -131,10 +136,7 @@ router.post('/logout', async (req: Request, res: Response) => {
     }
 
     // Extract the user ID from the decoded token
-    const userId = decodedToken.user_id;
-
-    // Log the user ID
-    console.log('User ID:', userId);
+    const userId: number = decodedToken.user_id;
 
     // Clear the refresh token in the database (assuming you have a users_account table)
     await query<users_account>('UPDATE users_account SET refresh_token = NULL WHERE user_id = $1', [userId]);
@@ -142,6 +144,18 @@ router.post('/logout', async (req: Request, res: Response) => {
     // Clear the access and refresh tokens from cookies
     res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'strict' });
     res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'strict' });
+
+    if (req.newAccessToken) {
+      // If the middleware provided a new access token, use it
+      // Set the new access token as a cookie
+      res.cookie('accessToken', req.newAccessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+    } else {
+      // Generate a new access token
+      const newAccessToken = generateAccessToken({ user_id: userId, email_address: '' /* Replace with the actual email address */ });
+
+      // Set the new access token as a cookie
+      res.cookie('accessToken', newAccessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+    }
 
     // Respond with a successful logout message
     res.status(200).json({ message: 'Logout successful' });
@@ -151,7 +165,6 @@ router.post('/logout', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 
 
