@@ -15,6 +15,40 @@ declare module 'express' {
 
 const router = Router();
 
+// Route to retrieve user profile data
+router.get('/profile/details', authenticateMiddleware, async (req: Request, res: Response) => {
+  try {
+    // Verify the access token from cookies
+    const accessToken = req.newAccessToken || req.cookies.accessToken;
+    const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
+
+    // Verify the access token
+    const decodedToken = verifyToken(accessToken, accessSecret);
+
+    // If the token is invalid or expired, return an unauthorized response
+    if (!decodedToken) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const userId: number = decodedToken.user_id;
+
+    // Retrieve user profile data from the database
+    const userProfileResult = await query<users_profile>('SELECT * FROM users_profile WHERE user_id = $1', [userId]);
+
+    if (userProfileResult.rows.length > 0) {
+      // User profile exists, send the data in the response
+      const userProfileData = userProfileResult.rows[0];
+      res.status(200).json({ userProfile: userProfileData });
+    } else {
+      // User profile doesn't exist, send a not found response
+      res.status(404).json({ error: 'User profile not found' });
+    }
+  } catch (error: any) {
+    console.error('Error while retrieving user profile:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Route to store or update user profile data
 router.post('/profile', authenticateMiddleware, async (req: Request, res: Response) => {
   try {
