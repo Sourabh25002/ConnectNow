@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
 import authRoute from "./routes/auth_route";
 import userProfileRoute from "./routes/users_profile_route";
+import educationRoute from "./routes/education_route";
+import workExperienceRoute from "./routes/work_experience_route";
 
 const app = express();
 const port = process.env.PORT;
@@ -45,6 +47,12 @@ app.use("/auth", authRoute);
 
 // Use user profile routes defined in the "userProfileRoute" module
 app.use("/user", userProfileRoute);
+
+// Use education routes defined in the "educationRoute" module
+app.use("/edu", educationRoute);
+
+// Use work experience routes defined in the "workExperienceRoute" module
+app.use("/work", workExperienceRoute);
 
 
 
