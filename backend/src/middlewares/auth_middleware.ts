@@ -1,6 +1,5 @@
-// Import necessary modules and types
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken, generateAccessToken, generateRefreshToken } from '../utils/jwt_Utils';
+import { verifyToken, generateAccessToken, generateRefreshToken } from '../utils/jwt_util';
 
 // Extend the Request interface to include the newAccessToken property
 declare module 'express' {

@@ -2,8 +2,8 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
-import authRoutes from "./routes/auth";
-
+import authRoute from "./routes/auth_route";
+import userProfileRoute from "./routes/users_profile_route";
 
 const app = express();
 const port = process.env.PORT;
@@ -31,13 +31,20 @@ app.use(express.static("public"));
 // Parse cookies using cookie-parser middleware
 app.use(cookieParser());
 
+
+
+//Self created routes
+
 // Root route
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello world!");
 });
 
-// Use authentication routes defined in the "authRoutes" module
-app.use("/auth", authRoutes);
+// Use authentication routes defined in the "authRoute" module
+app.use("/auth", authRoute);
+
+// Use user profile routes defined in the "userProfileRoute" module
+app.use("/user", userProfileRoute);
 
 
 

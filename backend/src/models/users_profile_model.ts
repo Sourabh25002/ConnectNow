@@ -1,4 +1,4 @@
-export interface user_profile {
+export interface users_profile {
   user_profile_id: number;
   user_id: number;
   first_name?: string;

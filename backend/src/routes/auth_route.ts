@@ -2,8 +2,8 @@ import { Router, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import bcrypt from 'bcrypt';
 import query from '../db/database';
-import { users_account } from '../models/users';  
-import { generateAccessToken, generateRefreshToken, verifyToken } from '../utils/jwt_Utils';
+import { users_account } from '../models/users_account_model';  
+import { generateAccessToken, generateRefreshToken, verifyToken } from '../utils/jwt_util';
 import authenticateMiddleware from '../middlewares/auth_middleware';
 
 const router = Router();
