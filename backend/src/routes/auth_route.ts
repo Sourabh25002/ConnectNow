@@ -11,6 +11,7 @@ router.use(cookieParser());
 
 // Signup Route
 router.post('/signUp', async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
     let { email_address, password }: users_account = req.body;
 

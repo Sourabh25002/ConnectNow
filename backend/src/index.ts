@@ -6,6 +6,7 @@ import authRoute from "./routes/auth_route";
 import userProfileRoute from "./routes/users_profile_route";
 import educationRoute from "./routes/education_route";
 import workExperienceRoute from "./routes/work_experience_route";
+import projectDetails from "./routes/project_details_route";
 
 const app = express();
 const port = process.env.PORT;
@@ -22,10 +23,10 @@ app.use(
 );
 
 // Parse incoming JSON requests with a size limit of 16kb
-app.use(express.json({ limit: "16kb" }));
+app.use(express.json());
 
 // Parse incoming URL-encoded requests with a size limit of 16kb
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.urlencoded({ extended: true}));
 
 // Serve static files from the "public" directory
 app.use(express.static("public"));
@@ -42,6 +43,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello world!");
 });
 
+
 // Use authentication routes defined in the "authRoute" module
 app.use("/auth", authRoute);
 
@@ -53,6 +55,8 @@ app.use("/edu", educationRoute);
 
 // Use work experience routes defined in the "workExperienceRoute" module
 app.use("/work", workExperienceRoute);
+
+app.use("/project", projectDetails);
 
 
 
