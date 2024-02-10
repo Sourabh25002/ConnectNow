@@ -35,7 +35,6 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 
-
 //Self created routes
 
 // Root route

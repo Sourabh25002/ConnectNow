@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import bcrypt from 'bcrypt';
 import query from '../db/database';
+import { upload } from '../middlewares/multer_middleware';
 import { users_account } from '../models/users_account_model';  
 import { generateAccessToken, generateRefreshToken, verifyToken } from '../utils/jwt_util';
 import authenticateMiddleware from '../middlewares/auth_middleware';
@@ -10,7 +11,7 @@ const router = Router();
 router.use(cookieParser());
 
 // Signup Route
-router.post('/signUp', async (req: Request, res: Response) => {
+router.post('/signUp', upload.none(), async (req: Request, res: Response) => {
   console.log(req.body);
   try {
     let { email_address, password }: users_account = req.body;
@@ -62,7 +63,7 @@ router.post('/signUp', async (req: Request, res: Response) => {
 
 
 // Login Route
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', upload.none(), async (req: Request, res: Response) => {
   try {
     const { email_address, password }: users_account = req.body;
 
@@ -114,7 +115,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
 
 // Logout Route
-router.post('/logout', authenticateMiddleware, async (req: Request, res: Response) => {
+router.post('/logout', authenticateMiddleware, upload.none(), async (req: Request, res: Response) => {
   try {
     // The authentication middleware will handle token refresh if needed
 

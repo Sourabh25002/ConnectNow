@@ -4,7 +4,11 @@ export interface project_details {
   project_name?: string;
   project_description?: string;
   required_skills?: string;
-  start_date?: Date;
-  end_date?: Date;
+  start_date?: Date | string;
+  end_date?: Date | string;
   project_link?: string;
 }
+
+
+
+

@@ -17,21 +17,17 @@ const router = Router();
 // Route to get user project details
 router.get('/projects', authenticateMiddleware, async (req: Request, res: Response) => {
   try {
-    // Verify the access token from cookies
     const accessToken = req.newAccessToken || req.cookies.accessToken;
     const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
 
-    // Verify the access token
     const decodedToken = verifyToken(accessToken, accessSecret);
 
-    // If the token is invalid or expired, return an unauthorized response
     if (!decodedToken) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
     const userId: number = decodedToken.user_id;
 
-    // Retrieve all project details for the authenticated user
     const projectDetailsResult = await query<project_details>('SELECT * FROM project_details WHERE user_id = $1', [userId]);
 
     res.status(200).json({ projectDetails: projectDetailsResult.rows });
@@ -44,23 +40,20 @@ router.get('/projects', authenticateMiddleware, async (req: Request, res: Respon
 // Route to create or update user project details
 router.post('/projects', authenticateMiddleware, async (req: Request, res: Response) => {
   try {
-    // Verify the access token from cookies
     const accessToken = req.newAccessToken || req.cookies.accessToken;
     const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
 
-    // Verify the access token
     const decodedToken = verifyToken(accessToken, accessSecret);
 
-    // If the token is invalid or expired, return an unauthorized response
     if (!decodedToken) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
     const userId: number = decodedToken.user_id;
 
-    // Create or update project details entry
     if (req.body.project_detail_id) {
       await updateProjectDetails(userId, req.body);
+
       res.status(200).json({ message: 'Project details updated successfully' });
     } else {
       await createProjectDetails(userId, req.body);
@@ -75,14 +68,11 @@ router.post('/projects', authenticateMiddleware, async (req: Request, res: Respo
 // Route to delete a specific project entry
 router.delete('/projects/:projectId', authenticateMiddleware, async (req: Request, res: Response) => {
   try {
-    // Verify the access token from cookies
     const accessToken = req.newAccessToken || req.cookies.accessToken;
     const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
 
-    // Verify the access token
     const decodedToken = verifyToken(accessToken, accessSecret);
 
-    // If the token is invalid or expired, return an unauthorized response
     if (!decodedToken) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -90,14 +80,12 @@ router.delete('/projects/:projectId', authenticateMiddleware, async (req: Reques
     const userId: number = decodedToken.user_id;
     const projectId: number = parseInt(req.params.projectId, 10);
 
-    // Check if the project entry exists for the authenticated user
     const existingProjectResult = await query<project_details>('SELECT * FROM project_details WHERE user_id = $1 AND project_detail_id = $2', [userId, projectId]);
 
     if (existingProjectResult.rows.length === 0) {
       return res.status(404).json({ error: 'Project entry not found' });
     }
 
-    // Delete the project entry
     await query('DELETE FROM project_details WHERE user_id = $1 AND project_detail_id = $2', [userId, projectId]);
 
     res.status(200).json({ message: 'Project entry deleted successfully' });
@@ -112,7 +100,14 @@ const createProjectDetails = async (userId: number, projectData: Partial<project
   const columns = Object.keys(projectData);
   const values = Object.values(projectData);
 
-  const placeholders = values.map((_, index) => `$${index + 2}`).join(', ');
+  const placeholders = values.map((value, index) => {
+    if (value instanceof Date) {
+      return `$${index + 2}::date`;
+    } else {
+      return `$${index + 2}`;
+    }
+  }).join(', ');
+  
   const queryText = `INSERT INTO project_details (user_id, ${columns.join(', ')}) VALUES ($1, ${placeholders})`;
 
   await query(queryText, [userId, ...values]);
@@ -120,16 +115,29 @@ const createProjectDetails = async (userId: number, projectData: Partial<project
 
 // Helper function to update an existing project details entry
 const updateProjectDetails = async (userId: number, projectData: Partial<project_details>) => {
-  // Exclude project_detail_id from the update operation
-  const { project_detail_id, ...updateData } = projectData;
+  const { project_detail_id: _, ...updateData } = projectData as Partial<project_details>;
 
   const setClause = Object.keys(updateData)
-    .map((key, index) => `${key} = $${index + 2}`)
+    .map((key, index) => {
+      if ((updateData as any)[key] instanceof Date) {
+        return `${key} = $${index + 2}::date`;
+      } else {
+        return `${key} = $${index + 2}`;
+      }
+    })
     .join(', ');
 
-  const queryText = `UPDATE project_details SET ${setClause} WHERE user_id = $1 AND project_detail_id = $${Object.keys(updateData).length + 2}`;
+  // Ensure that placeholders match the number of parameters
+  const placeholders = [...Array(Object.keys(updateData).length).keys()]
+    .map(index => `$${index + 2}`)
+    .join(', ');
 
-  await query(queryText, [userId, project_detail_id, ...Object.values(updateData)]);
+  const queryText = `UPDATE project_details SET ${setClause} WHERE user_id = $1 AND project_detail_id = $${Object.keys(updateData).length + 2} AND project_detail_id = $${Object.keys(updateData).length + 3}`;
+
+  await query(queryText, [userId, projectData.project_detail_id, projectData.project_detail_id, ...Object.values(updateData)]);
 };
+
+
+
 
 export default router;

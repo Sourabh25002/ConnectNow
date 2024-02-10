@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import authenticateMiddleware from '../middlewares/auth_middleware';
 import query from '../db/database';
+import { upload } from '../middlewares/multer_middleware';
 import { verifyToken } from '../utils/jwt_util';
 import { education } from '../models/education_model';
 import { users_account } from '../models/users_account_model';
@@ -16,7 +17,7 @@ declare module 'express' {
 const router = Router();
 
 // Route to create or update user education data
-router.post('/education', authenticateMiddleware, async (req: Request, res: Response) => {
+router.post('/education', authenticateMiddleware,  upload.none(), async (req: Request, res: Response) => {
   try {
     // Verify the access token from cookies
     const accessToken = req.newAccessToken || req.cookies.accessToken;

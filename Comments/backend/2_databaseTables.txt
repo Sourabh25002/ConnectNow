@@ -37,6 +37,17 @@ CREATE TABLE education (
     grade VARCHAR(50)
 );
 
+CREATE TABLE project_details (
+    project_detail_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users_account(user_id) NOT NULL,
+    project_name VARCHAR(100),
+    project_description TEXT,
+    required_skills VARCHAR(255),
+    start_date TIMESTAMP,
+    end_date TIMESTAMP,
+    project_link VARCHAR(255)
+);
+
 CREATE TABLE work_experience (
     experience_id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users_account(user_id) NOT NULL,
@@ -81,16 +92,8 @@ CREATE TABLE user_skills (
     skill_name VARCHAR(255)
 );
 
-CREATE TABLE project_details (
-    project_detail_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users_account(user_id) NOT NULL,
-    project_name VARCHAR(100),
-    project_description TEXT,
-    required_skills VARCHAR(255),
-    start_date DATE,
-    end_date DATE,
-    project_link VARCHAR(255)
-);
+
+
 
 
 
