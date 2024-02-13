@@ -1,14 +1,26 @@
+import React from "react";
+import Main from "./Main";
 import Header from "./Header";
+import Leftside from "./Leftside";
 
 const Home: React.FC = () => {
   return (
-    <div>
-      <Header />
-      <div className="container mx-auto mt-16 px-4">
-        {" "}
-        {/* Add margin-top to push the content below the header */}
-        <h1>Log In</h1>
+    <div className="flex flex-wrap">
+      {/* Leftmost column */}
+      <div className="w-full md:w-1/3">
+        <Leftside />
       </div>
+
+      {/* Center column */}
+      <div className="w-full md:w-1/3">
+        <Main />
+      </div>
+
+      {/* Rightmost column */}
+      <div className="w-full md:w-1/3"></div>
+
+      {/* <Header /> can be placed outside the flex layout if you want it to span the entire width */}
+      <Header />
     </div>
   );
 };

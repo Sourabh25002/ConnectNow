@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../public/logoname1.png";
+import logo from "../../public/logoname.png";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -81,14 +81,14 @@ const Login: React.FC = () => {
             </div>
             <button
               type="submit"
-              className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-full w-full mb-6"
+              className="bg-lBlue hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full w-full mb-6"
             >
               LOG IN
             </button>
             <div className="border-b border-gray-300 mb-6"></div>
             <div className="text-lg mb-6">Don't have an account?</div>
             <Link to="/signup">
-              <div className="border flex items-center justify-center py-4 rounded-full font-bold bg-blue-700 hover:bg-blue-600 w-full">
+              <div className="border flex items-center justify-center py-4 rounded-full font-bold bg-lBlue hover:bg-blue-700 w-full">
                 SIGN UP FOR CONNECTNOW
               </div>
             </Link>

@@ -87,3 +87,56 @@ export function Message(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function Media(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 16 16"
+      {...props}
+    >
+      <path
+        fill="#0077B5"
+        fillRule="evenodd"
+        d="M13 2.5H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5M3 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm9 9.857L9.5 8l-2.476 2.83L5.5 9L4 10.8V12h8zM6.5 8a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+  );
+}
+
+export function Event(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="#DD5143"
+        d="M7 11h2v2H7zm14-6v14c0 1.11-.89 2-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2M5 7h14V5H5zm14 12V9H5v10zm-4-6h2v-2h-2zm-4 0h2v-2h-2z"
+      ></path>
+    </svg>
+  );
+}
+
+export function Article(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 2048 2048"
+      {...props}
+    >
+      <path
+        fill="#DD5143"
+        d="M1536 768v128H512V768zm-256-512v128H512V256zm-256 1536v-640h512v640zm128-512v384h256v-384zm384-768v128H512V512zM256 0h1536v2048H256zm1408 1920V128H384v1792zm-768-256v128H512v-128zm0-512v128H512v-128zm0 256v128H512v-128z"
+      ></path>
+    </svg>
+  );
+}

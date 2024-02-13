@@ -11,7 +11,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto h-16 flex justify-between items-center py-4 px-4 md:px-8">
         {/* Logo */}
         <Link to="/home">
-          <img src="/logoname1.png" alt="Logo" className="h-10" />
+          <img src="/logoname.png" alt="Logo" className="h-10" />
         </Link>
 
         {/* Navigation */}
