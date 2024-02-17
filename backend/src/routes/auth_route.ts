@@ -52,6 +52,7 @@ router.post('/signUp', upload.none(), async (req: Request, res: Response) => {
     res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
 
+    // Send user ID and tokens in the response
     res.status(201).json({ userId: result.rows[0].user_id, accessToken, refreshToken, message: 'User successfully registered and logged in' });
   } catch (error: any) {
     // Handle errors during sign-up
@@ -100,11 +101,12 @@ router.post('/login', upload.none(), async (req: Request, res: Response) => {
     // Store the refresh token in the database
     await query<users_account>('UPDATE users_account SET refresh_token = $1 WHERE user_id = $2', [refreshToken, userId]);
 
-     // Send tokens as cookies
-     res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
-     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' }); 
+    // Send tokens and user ID in the response
+    res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' }); 
 
-    res.status(200).json({ userId, accessToken, refreshToken: user.user_id, message: 'Login successful' });
+    // Send tokens and user ID in the response
+    res.status(200).json({ userId, accessToken, refreshToken, message: 'Login successful' });
   } catch (error: any) {
     // Handle errors during login
     console.error('Error during login:', error.message);

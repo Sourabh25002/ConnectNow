@@ -1,11 +1,15 @@
 import React, { useState, FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../public/logoname.png";
+import axios from "axios";
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+
+  // Hook for navigation
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,26 +21,37 @@ const Signup: React.FC = () => {
     }
 
     try {
-      // Make API call to authenticate user
-      // Replace this with your actual authentication logic
-      const response = await fetch("http://your-backend-api-url.com/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      // Create FormData object
+      const formData = new FormData();
+      formData.append("email_address", email);
+      formData.append("password", password);
 
-      if (response.ok) {
-        // Login successful, handle the response accordingly
-        console.log("Login successful");
+      // Make API call to sign up user
+      const response = await axios.post(
+        "http://localhost:8001/auth/signUp",
+        formData
+      );
+
+      // Handle successful sign-up
+      if (response.status === 201) {
+        // Extract user ID, access token, and refresh token from the response
+        const { userId, accessToken, refreshToken } = response.data;
+
+        // Store tokens and user ID in browser cookies
+        document.cookie = `accessToken=${accessToken}; secure; samesite=strict`;
+        document.cookie = `refreshToken=${refreshToken}; secure; samesite=strict`;
+        document.cookie = `user_id=${userId}; secure; samesite=strict`;
+
+        // Redirect to home page
+        navigate("/home");
       } else {
-        // Handle login failure
-        setError("Invalid email or password.");
+        // Handle sign-up failure
+        setError("Sign-up failed. Please try again later.");
       }
     } catch (error) {
-      console.error("Error logging in:", error);
-      setError("An error occurred while logging in. Please try again later.");
+      // Handle errors
+      console.error("Error signing up:", error);
+      setError("An error occurred while signing up. Please try again later.");
     }
   };
 
@@ -44,7 +59,7 @@ const Signup: React.FC = () => {
     <div className="bg-black min-h-screen flex flex-col justify-center items-center">
       <img src={logo} alt="Logo" className="h-14 w-70 mb-4" />
       <div className="max-w-xl mx-auto p-8 bg-gray-900 rounded-lg shadow-lg">
-        {/* Login form */}
+        {/* Sign-up form */}
         <div className="text-white">
           <h1 className="text-4xl md:text-6xl mb-10">
             Discover what your <br /> network can do for you
