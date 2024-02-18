@@ -10,6 +10,7 @@ import projectDetails from "./routes/project_details_route";
 import postsRoute from "./routes/posts_route";
 import postLikes from "./routes/post_likes_route";
 import postComments from "./routes/post_comments_route";
+import connections from "./routes/connections_route";
 
 const app = express();
 const port = process.env.PORT;
@@ -65,6 +66,8 @@ app.use("/post", postsRoute);
 app.use("/like", postLikes);
 
 app.use("/comment", postComments);
+
+app.use("/follow", connections);
 
 
 
