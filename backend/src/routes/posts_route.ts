@@ -71,7 +71,7 @@ router.post('/posts',
         return res.status(400).json({ error: 'Content and media link are required' });
       }
 
-      // Handle uploading media (image or video) to Cloudinary
+      // Extract the URL from the media link
       const mediaUrl = await uploadOnCloudinary(media_link);
 
       // Insert the post into the database
@@ -88,6 +88,8 @@ router.post('/posts',
     }
   }
 );
+
+
 
 router.put('/posts/:post_id', 
   authenticateMiddleware, 
@@ -126,15 +128,17 @@ router.put('/posts/:post_id',
 
       // Check if a file was uploaded
       if (req.file) {
-        // Handle uploading media (image or video) to Cloudinary
+        // Extract the URL from the media link
         const uploadedMedia = await uploadOnCloudinary(req.file.path);
-        if (uploadedMedia) {
-          media_link = uploadedMedia.url; // Assuming the URL is stored in the 'url' property
+        if (uploadedMedia !== null) {
+          media_link = uploadedMedia.url; // Extracting URL from the UploadApiResponse object
         } else {
           // Handle case where uploadOnCloudinary returns null
-          return res.status(500).json({ error: 'Failed to upload media to Cloudinary' });
+          console.error('Failed to upload media to Cloudinary');
+          // Optionally handle the error or fallback behavior
         }
       }
+
 
       // Update only the fields provided by the user
       const updates: any = {};
@@ -155,6 +159,7 @@ router.put('/posts/:post_id',
     }
   }
 );
+
 
 
 // DELETE route to delete a post

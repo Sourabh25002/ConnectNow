@@ -68,11 +68,8 @@ const ProfileForm: React.FC = () => {
 
   return (
     <div className="bg-black min-h-screen flex flex-col justify-center items-center text-white w-1/2 h-3/4 mx-auto">
-      <Link to="/profile" className=" top-0 left-0 mt-4 ml-4">
-        <button
-          type="submit"
-          className="btn-submit bg-lBlue hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
+      <Link to="/profile" className="mt-4 ml-4 absolute top-0 left-0">
+        <button className="btn-submit bg-lBlue hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Back
         </button>
       </Link>

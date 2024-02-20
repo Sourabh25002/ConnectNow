@@ -6,10 +6,13 @@ import Signup from "./components/Signup";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import ProfileForm from "./components/UpdateProfile";
+import CreatePost from "./components/CreatePost";
+import Post from "./components/Posts";
+import UpdatePost from "./components/UpdatePost";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/login",
     element: <Login />,
   },
   {
@@ -27,6 +30,18 @@ const router = createBrowserRouter([
   {
     path: "/profile/edit",
     element: <ProfileForm />,
+  },
+  {
+    path: "/createPost",
+    element: <CreatePost />,
+  },
+  {
+    path: "/posts",
+    element: <Post />,
+  },
+  {
+    path: "/updatePost/:post_id",
+    element: <UpdatePost />,
   },
 ]);
 
