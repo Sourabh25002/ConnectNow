@@ -1,6 +1,7 @@
 import React, { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../public/logoname.png";
+import { backendUrl } from "../utils/config";
 import axios from "axios";
 
 const Login: React.FC = () => {
@@ -29,15 +30,11 @@ const Login: React.FC = () => {
       formData.append("password", password);
 
       // Make API call to authenticate user
-      const response = await axios.post(
-        "http://localhost:8001/auth/login",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(backendUrl + "/auth/login", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status === 200) {
         // Login successful, navigate to home page

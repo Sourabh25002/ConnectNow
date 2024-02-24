@@ -4,6 +4,7 @@ import Header from "./Header";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { backendUrl } from "../utils/config";
 
 const Profile: React.FC = () => {
   // State to store profile details
@@ -13,12 +14,9 @@ const Profile: React.FC = () => {
     const fetchProfileDetails = async () => {
       try {
         // Make GET request to fetch profile details
-        const response = await axios.get(
-          "http://localhost:8001/user/profile/details",
-          {
-            withCredentials: true, // Include cookies in the request
-          }
-        );
+        const response = await axios.get(backendUrl + `/user/profile/details`, {
+          withCredentials: true, // Include cookies in the request
+        });
 
         // Set profile details in state
         setProfileDetails(response.data);
@@ -50,16 +48,19 @@ const Profile: React.FC = () => {
     profileImageUrl = profileImageData.secure_url;
   }
 
+  // const navigate = useNavigate();
   return (
     <>
       <Header />
       <div className="bg-black text-white w-1/2 mx-auto mt-20 rounded-lg">
         {/* Banner image */}
-        <img
-          src={coverPhotoUrl}
-          alt="Banner"
-          className="w-full h-44 object-cover rounded-tl-lg rounded-tr-lg mb-4"
-        />
+        <Link to="/updateImages">
+          <img
+            src={coverPhotoUrl}
+            alt="Banner"
+            className="w-full h-44 object-cover rounded-tl-lg rounded-tr-lg mb-4"
+          />
+        </Link>
 
         <div className="px-4">
           {/* Edit profile icon */}
@@ -83,11 +84,13 @@ const Profile: React.FC = () => {
           </Link>
 
           {/* Profile image */}
-          <img
-            src={profileImageUrl}
-            alt="Profile"
-            className="w-24 h-24 rounded-full bg-white border-4 border-black mb-4 object-cover"
-          />
+          <Link to="/updateImages">
+            <img
+              src={profileImageUrl}
+              alt="Profile"
+              className="w-24 h-24 rounded-full bg-white border-4 border-black mb-4 object-cover"
+            />
+          </Link>
 
           {/* User details */}
           <div className="flex justify-between">

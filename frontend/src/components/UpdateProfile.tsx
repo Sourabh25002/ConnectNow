@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom"; // Assuming react-router-dom is used for routing
+import { backendUrl } from "../utils/config";
 
 interface FormData {
   first_name: string;
@@ -49,7 +50,7 @@ const ProfileForm: React.FC = () => {
       );
 
       const response = await axios.post(
-        "http://localhost:8001/user/profile",
+        backendUrl + "/user/profile",
         filteredData,
         {
           withCredentials: true,

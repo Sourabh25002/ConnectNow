@@ -2,6 +2,7 @@ import React, { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../public/logoname.png";
 import axios from "axios";
+import { backendUrl } from "../utils/config";
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -27,10 +28,7 @@ const Signup: React.FC = () => {
       formData.append("password", password);
 
       // Make API call to sign up user
-      const response = await axios.post(
-        "http://localhost:8001/auth/signUp",
-        formData
-      );
+      const response = await axios.post(backendUrl + "/auth/signUp", formData);
 
       // Handle successful sign-up
       if (response.status === 201) {

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { backendUrl } from "../utils/config";
 
 const UpdatePost: React.FC = () => {
   const [content, setContent] = useState("");
@@ -28,7 +29,7 @@ const UpdatePost: React.FC = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:8001/post/posts/${post_id}`, // Use post_id in the URL
+        backendUrl + `/post/posts/${post_id}`, // Use post_id in the URL
         formData,
         {
           withCredentials: true, // Include cookies in the request

@@ -20,9 +20,9 @@ CREATE TABLE users_profile (
     phone_number VARCHAR(255),
     connection_count INT,
     date_of_birth DATE,
-    personal_website_link VARCHAR(255),
-    profile_picture_url VARCHAR(255),
-    cover_photo_url VARCHAR(255),
+    personal_website_link VARCHAR(1000),
+    profile_picture_url VARCHAR(1000),
+    cover_photo_url VARCHAR(1000),
     about_description VARCHAR(2600)
 );
 

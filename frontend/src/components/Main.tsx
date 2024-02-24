@@ -1,10 +1,10 @@
 import React from "react";
 import { Media, Event, Article } from "../../public/Icons";
 import { Link } from "react-router-dom";
-// import Post from "./Posts"; // Assuming the name of the post component is Post, not Posts
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PostFetcher from "./Posts";
+import { backendUrl } from "../utils/config";
 
 const Main: React.FC = () => {
   // State to store profile details
@@ -14,12 +14,9 @@ const Main: React.FC = () => {
     const fetchProfileDetails = async () => {
       try {
         // Make GET request to fetch profile details
-        const response = await axios.get(
-          "http://localhost:8001/user/profile/details",
-          {
-            withCredentials: true, // Include cookies in the request
-          }
-        );
+        const response = await axios.get(backendUrl + "/user/profile/details", {
+          withCredentials: true, // Include cookies in the request
+        });
 
         // Set profile details in state
         setProfileDetails(response.data);

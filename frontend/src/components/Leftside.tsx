@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { backendUrl } from "../utils/config";
 import { Link } from "react-router-dom";
 
 const Leftside: React.FC = () => {
@@ -11,12 +12,9 @@ const Leftside: React.FC = () => {
     const fetchProfileDetails = async () => {
       try {
         // Make GET request to fetch profile details
-        const response = await axios.get(
-          "http://localhost:8001/user/profile/details",
-          {
-            withCredentials: true, // Include cookies in the request
-          }
-        );
+        const response = await axios.get(backendUrl + "/user/profile/details", {
+          withCredentials: true, // Include cookies in the request
+        });
 
         // Set profile details in state
         setProfileDetails(response.data);

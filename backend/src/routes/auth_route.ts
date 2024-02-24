@@ -149,17 +149,17 @@ router.post('/logout', authenticateMiddleware, upload.none(), async (req: Reques
     res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'strict' });
     res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'strict' });
 
-    if (req.newAccessToken) {
-      // If the middleware provided a new access token, use it
-      // Set the new access token as a cookie
-      res.cookie('accessToken', req.newAccessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
-    } else {
-      // Generate a new access token
-      const newAccessToken = generateAccessToken({ user_id: userId, email_address: '' /* Replace with the actual email address */ });
+    // if (req.newAccessToken) {
+    //   // If the middleware provided a new access token, use it
+    //   // Set the new access token as a cookie
+    //   res.cookie('accessToken', req.newAccessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+    // } else {
+    //   // Generate a new access token
+    //   const newAccessToken = generateAccessToken({ user_id: userId, email_address: '' /* Replace with the actual email address */ });
 
-      // Set the new access token as a cookie
-      res.cookie('accessToken', newAccessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
-    }
+    //   // Set the new access token as a cookie
+    //   res.cookie('accessToken', newAccessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+    // }
 
     // Respond with a successful logout message
     res.status(200).json({ message: 'Logout successful' });

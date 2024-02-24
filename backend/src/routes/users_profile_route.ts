@@ -51,6 +51,53 @@ router.get('/profile/details', authenticateMiddleware, async (req: Request, res:
   }
 });
 
+router.get('/profile/:user_id', async (req: Request, res: Response) => {
+  try {
+    const userId: number = parseInt(req.params.user_id); // Extract user_id from URL params
+
+    // Retrieve user profile data from the database
+    const userProfileResult = await query<users_profile>('SELECT * FROM users_profile WHERE user_id = $1', [userId]);
+
+    if (userProfileResult.rows.length > 0) {
+      // User profile exists, send the data in the response
+      const userProfileData = userProfileResult.rows[0];
+      res.status(200).json({ userProfile: userProfileData });
+    } else {
+      // User profile doesn't exist, send a not found response
+      res.status(404).json({ error: 'User profile not found' });
+    }
+  } catch (error: any) {
+    console.error('Error while retrieving user profile:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Route to get all user IDs except the logged-in user and connected users
+router.get('/users/all', authenticateMiddleware, async (req: Request, res: Response) => {
+  try {
+    const accessToken = req.newAccessToken || req.cookies.accessToken;
+    const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
+
+    const decodedToken = verifyToken(accessToken, accessSecret);
+
+    if (!decodedToken) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const loggedInUserId: number = decodedToken.user_id;
+
+    // Retrieve all user IDs except the logged-in user and connected users
+    const userIDsResult = await query<{ user_id: number }>('SELECT user_id FROM users_account WHERE user_id != $1 AND user_id NOT IN (SELECT followed_id FROM connections WHERE follower_id = $1)', [loggedInUserId]);
+
+    const userIds = userIDsResult.rows.map(row => row.user_id);
+
+    res.status(200).json({ userIDs: userIds });
+  } catch (error: any) {
+    console.error('Error while retrieving user IDs:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Route to store or update user profile data
 router.post('/profile', 
   authenticateMiddleware, 

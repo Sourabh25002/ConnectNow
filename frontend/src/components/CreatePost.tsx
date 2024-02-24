@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { backendUrl } from "../utils/config";
 import axios from "axios";
 
 const CreatePost = () => {
@@ -24,13 +25,9 @@ const CreatePost = () => {
         formData.append("media_link", media);
       }
 
-      const response = await axios.post(
-        "http://localhost:8001/post/posts",
-        formData,
-        {
-          withCredentials: true, // Include cookies in the request
-        }
-      );
+      const response = await axios.post(backendUrl + "/post/posts", formData, {
+        withCredentials: true, // Include cookies in the request
+      });
 
       // If post created successfully, navigate to /home
       if (response.status === 201) {

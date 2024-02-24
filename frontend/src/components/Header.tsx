@@ -27,7 +27,7 @@ const Header: React.FC = () => {
                 <span className="text-xs">Home</span>
               </Link>
               <Link
-                to="/search"
+                to="/error"
                 className="flex flex-col items-center text-gray-600 hover:text-white"
               >
                 <Search className="h-6 w-6 mb-1 mr-2" />{" "}
@@ -35,7 +35,7 @@ const Header: React.FC = () => {
                 <span className="text-xs">Search</span>
               </Link>
               <Link
-                to="/mynetwork"
+                to="/connections"
                 className="flex flex-col items-center text-gray-600 hover:text-white"
               >
                 <MyNetwork className="h-6 w-6 mb-1 mr-2" />{" "}
@@ -43,7 +43,7 @@ const Header: React.FC = () => {
                 <span className="text-xs">My Network</span>
               </Link>
               <Link
-                to="/messages"
+                to="/error"
                 className="flex flex-col items-center text-gray-600 hover:text-white"
               >
                 <Message className="h-6 w-6 mb-1 mr-2" />{" "}
@@ -51,7 +51,7 @@ const Header: React.FC = () => {
                 <span className="text-xs">Messages</span>
               </Link>
               <Link
-                to="/account"
+                to="/logout"
                 className="flex flex-col items-center text-gray-600 hover:text-white"
               >
                 <Account className="h-6 w-6 mb-1 mr-2" />{" "}

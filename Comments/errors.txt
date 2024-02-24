@@ -1,1 +1,3 @@
 #In project_details_route.ts  .. the update function is not working
+
+#when we are deleting post from frontend and if we liked the post or comment on this then it is not deleting

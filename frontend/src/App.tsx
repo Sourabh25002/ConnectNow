@@ -9,8 +9,16 @@ import ProfileForm from "./components/UpdateProfile";
 import CreatePost from "./components/CreatePost";
 import Post from "./components/Posts";
 import UpdatePost from "./components/UpdatePost";
+import UpdateImages from "./components/UpdateImages";
+import Logout from "./components/Logout";
+import NotFoundPage from "./components/NotFound";
+import Connections from "./components/Connections";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Login />,
+  },
   {
     path: "/login",
     element: <Login />,
@@ -42,6 +50,22 @@ const router = createBrowserRouter([
   {
     path: "/updatePost/:post_id",
     element: <UpdatePost />,
+  },
+  {
+    path: "/updateImages",
+    element: <UpdateImages />,
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
+  },
+  {
+    path: "/error",
+    element: <NotFoundPage />,
+  },
+  {
+    path: "/connections",
+    element: <Connections />,
   },
 ]);
 
