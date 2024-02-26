@@ -24,3 +24,5 @@
 #npm i jsonwebtoken
 #npm i cloudinary
 #npm i multer
+npm install -g npm-run-all
+#npm install esbuild
