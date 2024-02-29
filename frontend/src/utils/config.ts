@@ -1,1 +1,1 @@
-export const backendUrl = "https://connectnow-ogqm.onrender.com";
+export const backendUrl = "http://localhost:8001";

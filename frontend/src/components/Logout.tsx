@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { backendUrl } from "../utils/config";
+import Header from "./Header";
 
 const Logout: React.FC = () => {
   const navigate = useNavigate();
@@ -33,14 +34,17 @@ const Logout: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center mt-8">
-      <button
-        onClick={handleLogout}
-        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
-        Logout
-      </button>
-    </div>
+    <>
+      <Header />
+      <div className="flex justify-center mt-24">
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Logout
+        </button>
+      </div>
+    </>
   );
 };
 
