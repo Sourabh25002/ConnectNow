@@ -1,38 +1,34 @@
 {
   "compilerOptions": {
-   "sourceMap": true,
-    "target": "es2022",                                 
-    "module": "commonjs",                               
-    "esModuleInterop": true,                             
-    "forceConsistentCasingInFileNames": true,           
-    "strict": true,                                     
+    "sourceMap": true,
+    "target": "es2022",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "skipLibCheck": true,
     "rootDir": "./src",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "outDir": "../dist",
-		"types": ["node"]
+    "types": ["node"]
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "src/**/*.ts",
-    "src/*.ts"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["src/**/*.ts", "src/*.ts", "src/index.ts"]
 }
 
 // {
 //   "compilerOptions": {
-   
-//     "target": "es2016",                                 
-//     "module": "commonjs",                               
-//     "esModuleInterop": true,                             
-//     "forceConsistentCasingInFileNames": true,           
-//     "strict": true,                                     
-//     "skipLibCheck": true                                 
+
+//     "target": "es2016",
+//     "module": "commonjs",
+//     "esModuleInterop": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "strict": true,
+//     "skipLibCheck": true
 //   },
 //   "include": [
 //     "src/**/*.ts"
 //   ]
+
 // }

@@ -16,7 +16,10 @@ const app = express();
 const port = process.env.PORT;
 
 // Load environment variables from a .env file
-dotenv.config();
+dotenv.config({
+  path: './.env'
+});
+
 
 // Enable CORS middleware with credentials support
 app.use(
