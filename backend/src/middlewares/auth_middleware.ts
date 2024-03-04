@@ -11,7 +11,9 @@ declare module 'express' {
 // Define the authenticateMiddleware function
 const authenticateMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log(req.headers); // For debugging purposes
     // Get the access token from the request headers
+    console.log(req.cookies);
     const accessToken = req.cookies.accessToken;
 
     if (!accessToken) {

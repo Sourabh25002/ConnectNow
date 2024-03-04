@@ -49,8 +49,8 @@ router.post('/signUp', upload.none(), async (req: Request, res: Response) => {
     await query<users_account>('UPDATE users_account SET refresh_token = $1 WHERE user_id = $2', [refreshToken, result.rows[0].user_id]);
 
     // Send tokens as cookies
-    res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+    res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'none' });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'none' });
 
     // Send user ID and tokens in the response
     res.status(201).json({ userId: result.rows[0].user_id, accessToken, refreshToken, message: 'User successfully registered and logged in' });
@@ -102,8 +102,8 @@ router.post('/login', upload.none(), async (req: Request, res: Response) => {
     await query<users_account>('UPDATE users_account SET refresh_token = $1 WHERE user_id = $2', [refreshToken, userId]);
 
     // Send tokens and user ID in the response
-    res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' }); 
+    res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'none' });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'none' }); 
 
     // Send tokens and user ID in the response
     res.status(200).json({ userId, accessToken, refreshToken, message: 'Login successful' });
@@ -146,8 +146,8 @@ router.post('/logout', authenticateMiddleware, upload.none(), async (req: Reques
     await query<users_account>('UPDATE users_account SET refresh_token = NULL WHERE user_id = $1', [userId]);
 
     // Clear the access and refresh tokens from cookies
-    res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'strict' });
-    res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'strict' });
+    res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'none' });
+    res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'none' });
 
     // if (req.newAccessToken) {
     //   // If the middleware provided a new access token, use it
