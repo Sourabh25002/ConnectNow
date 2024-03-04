@@ -12,9 +12,10 @@ const Leftside: React.FC = () => {
     const fetchProfileDetails = async () => {
       try {
         // Make GET request to fetch profile details
-        const response = await axios.get(backendUrl + "/user/profile/details", {
-          withCredentials: true, // Include cookies in the request
-        });
+        const response = await axios.get(backendUrl + "/user/profile/details", credentials, {
+        withCredentials: true,
+        credentials: 'include',
+      });
 
         // Set profile details in state
         setProfileDetails(response.data);
