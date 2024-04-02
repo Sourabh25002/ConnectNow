@@ -19,7 +19,7 @@ Connect Now is a full stack social media web application built using the PERN (P
 * Axios for HTTP requests
 * React Router for routing
   
-#Backend
+# Backend
 * TypeScript
 * Node.js
 * Express.js
