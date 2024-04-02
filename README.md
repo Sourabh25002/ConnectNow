@@ -7,11 +7,10 @@ Connect Now is a full stack social media web application built using the PERN (P
 * User authentication: Users can sign up and log in securely using hashed passwords and JSON Web Tokens (JWT) for authentication.
 * Profile management: Users can create, update, and delete their profiles, including uploading profile pictures.
 * Post management: Users can create, update, and delete posts, as well as like and comment on posts.
-  
 * Connection: Users can connect with other users and view their posts on their timeline.
 * Image upload: Support for uploading images for user profile pictures and post images using Multer and Cloudinary.
   
-#Technologies Used
+# Technologies Used
 
 # Frontend
 * TypeScript
@@ -31,6 +30,5 @@ Connect Now is a full stack social media web application built using the PERN (P
 * Cloudinary for cloud storage of images
   
 # Database
-
 * PostgreSQL
 * pgAdmin for local database management
